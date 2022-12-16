@@ -1,0 +1,24 @@
+version: "3"
+services:
+
+  webserver:
+    image: nginx
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - backend
+    ports:
+    - "80:80"
+
+  backend:
+    image: plone/plone-backend:6.0.0b3
+    environment:
+      SITE: Plone
+      TYPE: classic
+    volumes:
+      - data:/data
+    ports:
+    - "8080:8080"
+
+volumes:
+  data: {}
