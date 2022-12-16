@@ -15,6 +15,7 @@ services:
     environment:
       SITE: Plone
       TYPE: classic
+      ADDONS: Products.PloneKeywordManager
     volumes:
       - data:/data
     ports:
