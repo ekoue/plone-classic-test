@@ -1,0 +1,43 @@
+type: install
+name: plonebun
+id: plonebun
+categories: ["apps/plone-classic-app"]
+
+description: |
+  Infrastructure As Code for project "plonebun"
+  
+ssl: true
+
+nodes:
+  - nodeType: nginx
+    nodeGroup: bl
+    count: 1
+    cloudlets: 8
+    displayName: LoadBalancer
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - backend
+    env:
+      PORT: 
+        - "80:80" 
+    
+  - image: plone/plone-backend:6.0.0b3
+    count: 1
+    cloudlets: 8
+    nodeGroup: cp
+    displayName: backend
+    env:
+      ADDONS: Products.PloneKeywordManager
+      SITE: Plone
+      TYPE: classic
+      PORT: 
+        - "8000:8000"
+    volumes:
+      - data:/data
+
+volumes:
+  data: {}
+
+success: |
+  Your Plonedev environment is ready! Rock'n Roll
